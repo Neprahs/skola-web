@@ -1,0 +1,45 @@
+{
+  "overrides": {
+    "sk": {
+      "demo.note": "Toto sú ukážkové texty a fotografie. Po dodaní materiálov od školy ich jednoducho nahradíte.",
+      "page.about.photoCaption": "Školský dvor a budova ZŠ Rudník — ukážková fotografia.",
+      "page.about.stats.acceptance.label": "Ročníkov výučby",
+      "page.about.stats.acceptance.value": "9",
+      "page.about.stats.clubs.label": "Krúžkov a aktivít",
+      "page.about.stats.clubs.value": "12+",
+      "page.about.stats.ratio.label": "Pomer žiakov a učiteľov",
+      "page.about.stats.ratio.value": "15:1",
+      "page.about.stats.students.label": "Žiakov",
+      "page.about.stats.students.value": "~200",
+      "page.home.cta.button": "Kontaktovať školu",
+      "page.home.cta.heading": "Radi vás privítame",
+      "page.home.cta.text": "Navštívte nás, spoznajte učiteľov alebo nás kontaktujte — odpovieme na vaše otázky.",
+      "page.home.docTitle": "Základná škola Rudník",
+      "page.home.explore.admissions.text": "Zápis do 1. ročníka a informácie pre rodiny.",
+      "page.home.explore.clubs.text": "Šport, tvorivosť a jazyky po vyučovaní.",
+      "page.home.explore.contact.text": "Adresa, telefón, e-mail a mapa školy.",
+      "page.home.explore.heading": "Kam ďalej?",
+      "page.home.explore.label": "Objavte školu",
+      "page.home.latestArticles": "Najnovšie články",
+      "page.home.life.art.text": "Jarná výstava výtvarného krúžka.",
+      "page.home.life.art.title": "Tvorivosť",
+      "page.home.life.heading": "Momenty z našej školy",
+      "page.home.life.label": "Život na škole",
+      "page.home.life.lead": "Ukážkové fotografie z podujatí — kliknite a prečítajte si celý článok.",
+      "page.home.life.nature.text": "Spoznávanie prírody v okolí Rudníka.",
+      "page.home.life.nature.title": "Výlety",
+      "page.home.life.sport.text": "Aktívny deň na čerstvom vzduchu.",
+      "page.home.life.sport.title": "Šport a pohyb",
+      "page.home.news": "Novinky",
+      "page.home.welcome": "Vitajte",
+      "page.home.welcomeLead": "Prezrite si najnovšie novinky a príbehy zo Základnej školy Rudník. Kliknite na fotku a prečítajte si celý článok.",
+      "page.home.welcomeTitle": "Inšpirujeme mysle, formujeme budúcnosť"
+    }
+  },
+  "images": {
+    "content.home.welcomeImage": "https://images.unsplash.com/photo-1562774053-701939374585?w=900&h=675&fit=crop"
+  },
+  "blocks": {
+    "home": []
+  }
+}

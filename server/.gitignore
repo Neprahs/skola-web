@@ -1,0 +1,7 @@
+node_modules/
+uploads/*
+!uploads/.gitkeep
+data/articles-store.json
+data/content-store.json
+data/articles.db
+.env

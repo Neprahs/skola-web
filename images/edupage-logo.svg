@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" role="img" aria-label="EduPage">
+  <rect x="0" y="4" width="40" height="40" rx="8" fill="#f97316"/>
+  <path d="M12 16h16v3H12zm0 7h16v3H12zm0 7h11v3H12z" fill="#fff"/>
+  <text x="50" y="32" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#1e3a8a">Edu</text>
+  <text x="98" y="32" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#f97316">Page</text>
+</svg>

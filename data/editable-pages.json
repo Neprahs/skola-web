@@ -1,0 +1,29 @@
+{
+  "pages": [
+    { "id": "home", "label": "Úvodná stránka", "prefixes": ["page.home", "page.about.stats", "page.about.photoCaption", "demo.note"] },
+    { "id": "about", "label": "O škole", "prefixes": ["page.about"] },
+    { "id": "admissions", "label": "Prijímačky", "prefixes": ["page.admissions"] },
+    { "id": "clubs", "label": "Krúžky", "prefixes": ["page.clubs", "demo.note", "page.clubs.intro", "page.clubs.sport", "page.clubs.art", "page.clubs.english"] },
+    { "id": "library", "label": "Knižnica", "prefixes": ["page.library", "demo.note", "page.library.hours", "page.library.feature"] },
+    { "id": "projects", "label": "Projekty", "prefixes": ["page.projects", "demo.note", "page.projects.eco", "page.projects.reading", "page.projects.digital"] },
+    { "id": "teachers", "label": "Učitelia", "prefixes": ["page.teachers", "demo.note", "page.teachers.team", "page.teachers.person"] },
+    { "id": "partners", "label": "Partneri", "prefixes": ["page.partners", "demo.note", "page.partners.village", "page.partners.library", "page.partners.sport"] },
+    { "id": "guidance", "label": "Výchovný poradca", "prefixes": ["page.guidance", "demo.note", "page.guidance.offer"] },
+    { "id": "psychologist", "label": "Školský psychológ", "prefixes": ["page.psychologist", "demo.note", "page.psychologist.offer"] },
+    { "id": "forms", "label": "Tlačivá", "prefixes": ["page.forms", "demo.note"] },
+    { "id": "school-rules", "label": "Školský poriadok", "prefixes": ["page.schoolRules", "demo.note", "page.schoolRules.section"] },
+    { "id": "school-board", "label": "Rada školy", "prefixes": ["page.schoolBoard", "demo.note", "page.schoolBoard.section", "page.schoolBoard.member"] },
+    { "id": "privacy", "label": "Ochrana súkromia", "prefixes": ["page.privacy", "demo.note", "page.privacy.section", "page.privacy.item"] },
+    { "id": "contracts", "label": "Zmluvy a faktúry", "prefixes": ["page.contracts", "demo.note", "page.contracts.section", "page.contracts.sample"] },
+    { "id": "contact", "label": "Kontakt", "prefixes": ["page.contact"] },
+    { "id": "news", "label": "Novinky (úvod textu)", "prefixes": ["page.news"] }
+  ],
+  "images": [
+    { "key": "content.home.welcomeImage", "page": "home", "label": "Uvítacia fotka", "default": "https://images.unsplash.com/photo-1562774053-701939374585?w=900&h=675&fit=crop" },
+    { "key": "content.about.heroImage", "page": "about", "label": "Fotka pri O škole", "default": "https://images.unsplash.com/photo-1562774053-701939374585?w=800&h=600&fit=crop" },
+    { "key": "content.clubs.card1", "page": "clubs", "label": "Krúžky – fotka 1 (šport)", "default": "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=800&h=500&fit=crop" },
+    { "key": "content.clubs.card2", "page": "clubs", "label": "Krúžky – fotka 2 (výtvarný)", "default": "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&h=500&fit=crop" },
+    { "key": "content.clubs.card3", "page": "clubs", "label": "Krúžky – fotka 3 (anglický)", "default": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=500&fit=crop" },
+    { "key": "content.library.main", "page": "library", "label": "Knižnica – hlavná fotka", "default": "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=900&h=675&fit=crop" }
+  ]
+}
