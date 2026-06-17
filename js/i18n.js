@@ -25,6 +25,8 @@
 
     let currentLang = DEFAULT_LANG;
     let languageDocumentBound = false;
+    let contentBooted = false;
+    let contentBootPromise = null;
 
     function getStoredLang() {
         const stored = localStorage.getItem(LANG_KEY);
@@ -153,12 +155,11 @@
         }
     }
 
-    function init() {
-        currentLang = getStoredLang();
-        document.documentElement.lang = currentLang;
-        bindLanguageControls();
+    async function bootContentOnce() {
+        if (contentBooted) return;
+        if (contentBootPromise) return contentBootPromise;
 
-        const boot = async () => {
+        contentBootPromise = (async () => {
             if (typeof window.loadSiteContentOverrides === "function") {
                 try {
                     await window.loadSiteContentOverrides();
@@ -166,14 +167,26 @@
                     // Static preview without backend.
                 }
             }
+            contentBooted = true;
+        })();
 
-            applyTranslations();
-            if (typeof window.refreshSiteContentOnPage === "function") {
-                window.refreshSiteContentOnPage();
-            }
-        };
+        return contentBootPromise;
+    }
 
-        boot();
+    async function init() {
+        currentLang = getStoredLang();
+        document.documentElement.lang = currentLang;
+        bindLanguageControls();
+        await bootContentOnce();
+        applyTranslations();
+        if (typeof window.refreshSiteContentOnPage === "function") {
+            window.refreshSiteContentOnPage();
+        }
+    }
+
+    function refreshAfterHeader() {
+        bindLanguageControls();
+        applyTranslations();
     }
 
     window.RPS_I18N = {
@@ -194,5 +207,5 @@
         init();
     }
 
-    document.addEventListener("rps-i18n-update", init);
+    document.addEventListener("rps-i18n-update", refreshAfterHeader);
 })();

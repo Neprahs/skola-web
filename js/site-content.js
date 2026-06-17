@@ -64,7 +64,12 @@ function applyContentImages(store) {
     document.querySelectorAll("[data-content-image]").forEach((img) => {
         const key = img.dataset.contentImage;
         const url = images[key] || img.dataset.contentDefault || img.getAttribute("src");
-        if (url) img.src = url;
+        if (!url) return;
+
+        const resolved = new URL(url, window.location.href).href;
+        if (img.src !== resolved) {
+            img.src = url;
+        }
     });
 }
 
@@ -115,8 +120,5 @@ window.loadSiteContentOverrides = loadSiteContentOverrides;
 window.refreshSiteContentOnPage = refreshSiteContentOnPage;
 
 document.addEventListener("rps-language-change", () => {
-    if (window.RPS_I18N?.apply) {
-        window.RPS_I18N.apply();
-    }
     refreshSiteContentOnPage();
 });
