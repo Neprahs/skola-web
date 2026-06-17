@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="sk" data-base="." data-page="news" data-doc-title="page.article.docTitle" data-doc-description="page.default.metaDescription">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Oficiálna stránka Základnej školy Rudník.">
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+    <title>Article — Rudník Primary School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="js/translations.js" defer></script>
+    <script src="js/translations-pages.js" defer></script>
+    <script src="js/i18n.js" defer></script>
+    <script src="js/accessibility.js" defer></script>
+    <script src="js/seo.js" defer></script>
+</head>
+<body>
+
+    <div id="site-header"></div>
+
+    <main class="page-content" id="article-content">
+        <section class="article-hero">
+            <img id="article-hero-image" src="" alt="">
+            <div class="article-hero-overlay">
+                <div class="container">
+                    <nav class="breadcrumb breadcrumb-light" data-i18n-aria="a11y.breadcrumb">
+                        <a href="index.html" data-i18n="common.home">Domov</a>
+                        <span aria-hidden="true">/</span>
+                        <a href="news.html" data-i18n="nav.news">Novinky</a>
+                        <span aria-hidden="true">/</span>
+                        <span id="article-breadcrumb-current" aria-current="page" data-i18n="page.article.breadcrumbFallback">Článok</span>
+                    </nav>
+                    <time id="article-hero-date" datetime=""></time>
+                    <h1 id="article-hero-title" data-i18n="page.article.loading">Načítava sa…</h1>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="container container-narrow">
+                <div class="article-body" id="article-body"></div>
+                <a href="news.html" class="btn-secondary article-back-link" data-i18n="common.backToNews">← Všetky novinky</a>
+            </div>
+        </section>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script src="partials/header.js" defer></script>
+    <script src="partials/footer.js" defer></script>
+    <script src="js/articles.js" defer></script>
+    <script src="js/content-layout.js" defer></script>
+    <script src="js/article-page.js" defer></script>
+    <script src="script.js" defer></script>
+</body>
+</html>

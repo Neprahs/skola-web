@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="sk" data-base="." data-page="news" data-doc-title="page.news.docTitle" data-doc-description="page.default.metaDescription">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Oficiálna stránka Základnej školy Rudník.">
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+    <title>Novinky — Základná škola Rudník</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="js/translations.js" defer></script>
+    <script src="js/translations-pages.js" defer></script>
+    <script src="js/translations-demo.js" defer></script>
+    <script src="js/content-layout.js" defer></script>
+    <script src="js/site-content.js" defer></script>
+    <script src="js/i18n.js" defer></script>
+    <script src="js/accessibility.js" defer></script>
+    <script src="js/seo.js" defer></script>
+</head>
+<body>
+
+    <div id="site-header"></div>
+
+    <main class="page-content" id="main-content">
+        <section class="page-hero">
+            <div class="page-hero-inner">
+                <nav class="breadcrumb" data-i18n-aria="a11y.breadcrumb">
+                    <a href="index.html" data-i18n="common.home">Domov</a>
+                    <span aria-hidden="true">/</span>
+                    <span aria-current="page" data-i18n="page.news.title">Novinky a podujatia</span>
+                </nav>
+                <h1 data-i18n="page.news.title">Novinky a podujatia</h1>
+                <p class="page-hero-lead" data-i18n="page.news.lead">Sledujte školské novinky, podujatia a oznámenia. Kliknite na fotku a prečítajte si celý článok.</p>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="container">
+                <div class="article-grid" id="news-grid"></div>
+            </div>
+        </section>
+            <div class="page-custom-blocks container" data-page-blocks="news" hidden></div>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script src="partials/header.js" defer></script>
+    <script src="partials/footer.js" defer></script>
+    <script src="js/articles.js" defer></script>
+    <script src="js/article-ui.js" defer></script>
+    <script src="js/news-page.js" defer></script>
+    <script src="script.js" defer></script>
+</body>
+</html>

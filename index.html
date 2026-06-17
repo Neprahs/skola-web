@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html lang="sk" data-base="." data-page="home" data-doc-title="page.home.docTitle">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+    <title>Základná škola Rudník</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="js/translations.js"></script>
+    <script src="js/translations-pages.js"></script>
+    <script src="js/translations-demo.js"></script>
+    <script src="js/content-layout.js"></script>
+    <script src="js/site-content.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/accessibility.js"></script>
+</head>
+<body>
+
+    <div id="site-header"></div>
+
+    <main class="page-content" id="main-content">
+        <section class="hero-carousel" id="hero-carousel" data-i18n-aria="a11y.carousel">
+            <div class="carousel-viewport">
+                <div class="carousel-track"></div>
+            </div>
+            <button type="button" class="carousel-prev" data-i18n-aria="a11y.prevSlide">‹</button>
+            <button type="button" class="carousel-next" data-i18n-aria="a11y.nextSlide">›</button>
+            <div class="carousel-dots" role="tablist" data-i18n-aria="a11y.carouselSlides"></div>
+        </section>
+
+        <section class="home-intro">
+            <div class="container">
+                <div class="demo-split">
+                    <figure>
+                        <img src="https://images.unsplash.com/photo-1562774053-701939374585?w=900&amp;h=675&amp;fit=crop" alt="" data-i18n-alt="demo.photoAlt.schoolBuilding" data-content-image="content.home.welcomeImage" data-content-default="https://images.unsplash.com/photo-1562774053-701939374585?w=900&amp;h=675&amp;fit=crop" loading="lazy" width="900" height="675">
+                        <figcaption data-i18n="page.about.photoCaption">Školský dvor a budova ZŠ Rudník — ukážková fotografia.</figcaption>
+                    </figure>
+                    <div>
+                        <span class="section-label" data-i18n="page.home.welcome">Vitajte</span>
+                        <h2 data-i18n="page.home.welcomeTitle">Inšpirujeme mysle, formujeme budúcnosť</h2>
+                        <p class="section-lead" data-i18n="page.home.welcomeLead">Prezrite si najnovšie novinky a príbehy zo Základnej školy Rudník. Kliknite na fotku a prečítajte si celý článok.</p>
+                        <div class="home-cta-row">
+                            <a href="about.html" class="btn-secondary" data-i18n="nav.about">O škole</a>
+                            <a href="admissions.html" class="btn-primary" data-i18n="nav.admissions">Prijímačky</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-label" data-i18n="page.home.explore.label">Objavte školu</span>
+                    <h2 data-i18n="page.home.explore.heading">Kam ďalej?</h2>
+                </div>
+                <div class="card-grid">
+                    <a href="clubs.html" class="info-card info-card-link">
+                        <div class="info-card-icon" aria-hidden="true">01</div>
+                        <h3 data-i18n="side.clubs">Krúžky</h3>
+                        <p data-i18n="page.home.explore.clubs.text">Šport, tvorivosť a jazyky po vyučovaní.</p>
+                    </a>
+                    <a href="admissions.html" class="info-card info-card-link">
+                        <div class="info-card-icon" aria-hidden="true">02</div>
+                        <h3 data-i18n="nav.admissions">Prijímačky</h3>
+                        <p data-i18n="page.home.explore.admissions.text">Zápis do 1. ročníka a informácie pre rodiny.</p>
+                    </a>
+                    <a href="contact.html" class="info-card info-card-link">
+                        <div class="info-card-icon" aria-hidden="true">03</div>
+                        <h3 data-i18n="nav.contact">Kontakt</h3>
+                        <p data-i18n="page.home.explore.contact.text">Adresa, telefón, e-mail a mapa školy.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section page-section-alt">
+            <div class="container">
+                <div class="section-header section-header-row">
+                    <div>
+                        <span class="section-label" data-i18n="page.home.news">Novinky</span>
+                        <h2 data-i18n="page.home.latestArticles">Najnovšie články</h2>
+                    </div>
+                    <a href="news.html" class="btn-secondary" data-i18n="common.viewAllNews">Všetky novinky</a>
+                </div>
+                <div class="article-grid" id="latest-articles"></div>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="container">
+                <p class="demo-note" data-i18n="demo.note">Toto sú ukážkové texty a fotografie. Po dodaní materiálov od školy ich jednoducho nahradíte.</p>
+                <div class="section-header">
+                    <span class="section-label" data-i18n="page.home.life.label">Život na škole</span>
+                    <h2 data-i18n="page.home.life.heading">Momenty z našej školy</h2>
+                    <p class="section-lead" data-i18n="page.home.life.lead">Ukážkové fotografie z podujatí — kliknite a prečítajte si celý článok.</p>
+                </div>
+                <div class="demo-media-grid">
+                    <a href="article.html?slug=den-zdravia-2026" class="demo-photo-card demo-photo-card-link">
+                        <img src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=800&amp;h=500&amp;fit=crop" alt="" data-i18n-alt="demo.photoAlt.sport" loading="lazy" width="800" height="500">
+                        <div class="demo-photo-card-body">
+                            <h3 data-i18n="page.home.life.sport.title">Šport a pohyb</h3>
+                            <p data-i18n="page.home.life.sport.text">Aktívny deň na čerstvom vzduchu.</p>
+                        </div>
+                    </a>
+                    <a href="article.html?slug=krizk-vytvarny-2026" class="demo-photo-card demo-photo-card-link">
+                        <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&amp;h=500&amp;fit=crop" alt="" data-i18n-alt="demo.photoAlt.art" loading="lazy" width="800" height="500">
+                        <div class="demo-photo-card-body">
+                            <h3 data-i18n="page.home.life.art.title">Tvorivosť</h3>
+                            <p data-i18n="page.home.life.art.text">Jarná výstava výtvarného krúžka.</p>
+                        </div>
+                    </a>
+                    <a href="article.html?slug=vylet-priroda-2026" class="demo-photo-card demo-photo-card-link">
+                        <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&amp;h=500&amp;fit=crop" alt="" data-i18n-alt="demo.photoAlt.nature" loading="lazy" width="800" height="500">
+                        <div class="demo-photo-card-body">
+                            <h3 data-i18n="page.home.life.nature.title">Výlety</h3>
+                            <p data-i18n="page.home.life.nature.text">Spoznávanie prírody v okolí Rudníka.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-bar">
+            <div class="container stats-grid">
+                <div class="stat-item">
+                    <strong data-i18n="page.about.stats.students.value">~200</strong>
+                    <span data-i18n="page.about.stats.students.label">Žiakov</span>
+                </div>
+                <div class="stat-item">
+                    <strong data-i18n="page.about.stats.acceptance.value">9</strong>
+                    <span data-i18n="page.about.stats.acceptance.label">Ročníkov výučby</span>
+                </div>
+                <div class="stat-item">
+                    <strong data-i18n="page.about.stats.clubs.value">12+</strong>
+                    <span data-i18n="page.about.stats.clubs.label">Krúžkov a aktivít</span>
+                </div>
+                <div class="stat-item">
+                    <strong data-i18n="page.about.stats.ratio.value">15:1</strong>
+                    <span data-i18n="page.about.stats.ratio.label">Pomer žiakov a učiteľov</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="container">
+                <div class="cta-banner">
+                    <div>
+                        <h2 data-i18n="page.home.cta.heading">Radi vás privítame</h2>
+                        <p data-i18n="page.home.cta.text">Navštívte nás, spoznajte učiteľov alebo nás kontaktujte — odpovieme na vaše otázky.</p>
+                    </div>
+                    <a href="contact.html" class="btn-primary" data-i18n="page.home.cta.button">Kontaktovať školu</a>
+                </div>
+            </div>
+        </section>
+        <div class="page-custom-blocks container" data-page-blocks="home" hidden></div>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script src="partials/header.js"></script>
+    <script src="partials/footer.js"></script>
+    <script src="js/articles.js"></script>
+    <script src="js/article-ui.js"></script>
+    <script src="js/home.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

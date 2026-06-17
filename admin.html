@@ -1,0 +1,229 @@
+﻿<!DOCTYPE html>
+<html lang="sk" data-base="." data-page="admin" data-doc-title="page.admin.docTitle">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Správa webu — Základná škola Rudník</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="js/translations.js"></script>
+    <script src="js/translations-pages.js"></script>
+    <script src="js/translations-demo.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/accessibility.js"></script>
+</head>
+<body>
+
+    <div id="site-header"></div>
+
+    <main class="page-content">
+        <section class="page-hero">
+            <div class="page-hero-inner">
+                <nav class="breadcrumb" data-i18n-aria="a11y.breadcrumb">
+                    <a href="index.html" data-i18n="common.home">Domov</a><span aria-hidden="true">/</span>
+                    <span aria-current="page">Správa webu</span>
+                </nav>
+                <h1>Správa webu</h1>
+                <p class="page-hero-lead">Upravujte novinky, texty na stránkach, fotky a pridávajte vlastné sekcie. Zmeny sa ukladajú na server.</p>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="container admin-container">
+                <div class="admin-panel">
+                    <div class="admin-login" id="admin-login">
+                        <form class="admin-form" id="login-form">
+                            <h2 data-i18n="page.admin.login.heading">Prihlásenie administrátora</h2>
+                            <label>
+                                <span data-i18n="page.admin.login.passwordLabel">Heslo</span>
+                                <input type="password" id="admin-password" required autocomplete="current-password">
+                            </label>
+                            <button type="submit" class="btn-primary" data-i18n="page.admin.login.submit">Prihlásiť sa</button>
+                        </form>
+                    </div>
+
+                    <div id="admin-dashboard" hidden>
+                        <div class="admin-toolbar">
+                            <button type="button" class="btn-secondary" id="logout-btn" data-i18n="page.admin.logout">Odhlásiť sa</button>
+                        </div>
+
+                        <div class="admin-tabs" role="tablist">
+                            <button type="button" class="admin-tab is-active" data-admin-tab="articles" data-i18n-lock="true">Novinky</button>
+                            <button type="button" class="admin-tab" data-admin-tab="pages" data-i18n-lock="true">Stránky</button>
+                        </div>
+
+                        <p class="admin-message" id="admin-message" role="status" aria-live="polite">Zmeny sa ukladajú na server.</p>
+
+                        <div id="admin-tab-articles">
+                            <div class="admin-list" id="admin-article-list"></div>
+
+                            <form class="admin-form" id="admin-article-form">
+                                <h2 id="form-title" data-i18n="page.admin.form.addTitle">Pridať nový článok</h2>
+                                <input type="hidden" id="article-id">
+
+                                <label>
+                                    <span data-i18n="page.admin.form.titleLabel">Nadpis</span>
+                                    <input type="text" id="article-title" required>
+                                </label>
+
+                                <label>
+                                    <span data-i18n="page.admin.form.excerptLabel">Krátky popis (zobrazený na kartách a v karuseli)</span>
+                                    <textarea id="article-excerpt" rows="3" required></textarea>
+                                </label>
+
+                                <label>
+                                    <span data-i18n="page.admin.form.imageLabel">Obrázok (karusel a karty)</span>
+                                    <div class="admin-image-row">
+                                        <input type="text" id="article-image" placeholder="/uploads/foto.jpg alebo https://..." data-i18n-placeholder="page.admin.form.imagePlaceholder" required>
+                                        <label class="btn-primary admin-import-label">
+                                            <span data-i18n="page.admin.form.upload">Vybrať foto z PC</span>
+                                            <input type="file" id="image-upload" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+                                        </label>
+                                    </div>
+                                    <img id="image-preview" class="admin-image-preview" alt="" hidden>
+                                </label>
+
+                                <label>
+                                    <span>Úvodná fotka na stránke článku</span>
+                                    <select id="article-hero-style" class="admin-layout-select">
+                                        <option value="large">Veľká (predvolené)</option>
+                                    </select>
+                                </label>
+
+                                <label>
+                                    <span data-i18n="page.admin.form.dateLabel">Dátum</span>
+                                    <input type="date" id="article-date" required>
+                                </label>
+
+                                <label class="admin-checkbox">
+                                    <input type="checkbox" id="article-featured">
+                                    <span data-i18n="page.admin.form.featuredLabel">Zobraziť v karuseli na úvodnej stránke</span>
+                                </label>
+
+                                <div class="admin-cms-card admin-cms-card--accent">
+                                    <div class="admin-blocks-header">
+                                        <div class="admin-cms-card-head admin-cms-card-head--inline">
+                                            <span class="admin-cms-card-icon" aria-hidden="true">✎</span>
+                                            <div>
+                                                <h3>Obsah článku</h3>
+                                                <p>Odseky, fotky a kombinácie text + fotka</p>
+                                            </div>
+                                        </div>
+                                        <div class="admin-section-actions">
+                                            <button type="button" class="btn-secondary btn-add-chip" id="add-section-text">+ Text</button>
+                                            <button type="button" class="btn-secondary btn-add-chip" id="add-section-split">+ Text a fotka</button>
+                                            <button type="button" class="btn-secondary btn-add-chip" id="add-section-image">+ Fotka</button>
+                                        </div>
+                                    </div>
+                                    <p class="admin-help-text">Pridávajte časti článku a vyberte rozloženie (vľavo/vpravo) aj veľkosť fotky.</p>
+                                    <div id="article-sections-empty" class="admin-blocks-empty">
+                                        <span class="admin-blocks-empty-icon" aria-hidden="true">+</span>
+                                        <p>Zatiaľ žiadny obsah</p>
+                                        <span>Pridajte text, fotku alebo kombináciu</span>
+                                    </div>
+                                    <div id="article-sections" class="admin-blocks-list"></div>
+                                </div>
+
+                                <textarea id="article-content" hidden></textarea>
+
+                                <div class="admin-form-actions">
+                                    <button type="submit" class="btn-primary" data-i18n="page.admin.form.save">Uložiť článok</button>
+                                    <button type="button" class="btn-secondary" id="cancel-edit" hidden data-i18n="page.admin.form.cancelEdit">Zrušiť úpravu</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div id="admin-tab-pages" hidden>
+                            <form class="admin-form admin-cms-form" id="page-editor-form">
+                                <div class="admin-cms-intro">
+                                    <h2>Upraviť stránku</h2>
+                                    <p class="admin-cms-lead">Vyberte podstránku, upravte texty a fotky, alebo pridajte vlastné sekcie s rozložením.</p>
+                                </div>
+
+                                <div class="admin-cms-toolbar">
+                                    <label class="admin-cms-picker">
+                                        <span>Stránka</span>
+                                        <select id="page-select"></select>
+                                    </label>
+                                    <label class="admin-cms-picker">
+                                        <span>Jazyk textov</span>
+                                        <select id="page-lang">
+                                            <option value="sk">Slovenčina</option>
+                                            <option value="en">English</option>
+                                            <option value="cs">Čeština</option>
+                                            <option value="de">Deutsch</option>
+                                            <option value="pl">Polski</option>
+                                            <option value="hu">Magyar</option>
+                                            <option value="uk">Українська</option>
+                                        </select>
+                                    </label>
+                                </div>
+
+                                <div class="admin-cms-card">
+                                    <div class="admin-cms-card-head">
+                                        <span class="admin-cms-card-icon" aria-hidden="true">Aa</span>
+                                        <div>
+                                            <h3>Texty stránky</h3>
+                                            <p>Nadpisy, odseky a popisy na vybranej podstránke</p>
+                                        </div>
+                                    </div>
+                                    <div id="page-fields" class="admin-page-fields admin-cms-fields"></div>
+                                </div>
+
+                                <div class="admin-cms-card" id="page-images-card">
+                                    <div class="admin-cms-card-head">
+                                        <span class="admin-cms-card-icon" aria-hidden="true">🖼</span>
+                                        <div>
+                                            <h3>Fotky stránky</h3>
+                                            <p>Hlavné obrázky viazané na túto podstránku</p>
+                                        </div>
+                                    </div>
+                                    <div id="page-images" class="admin-page-images admin-cms-fields"></div>
+                                </div>
+
+                                <div class="admin-cms-card admin-cms-card--accent">
+                                    <div class="admin-blocks-header">
+                                        <div class="admin-cms-card-head admin-cms-card-head--inline">
+                                            <span class="admin-cms-card-icon" aria-hidden="true">⊞</span>
+                                            <div>
+                                                <h3>Vlastné sekcie</h3>
+                                                <p>Fotka + text s výberom rozloženia a veľkosti</p>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn-primary btn-add-section" id="add-block-btn">+ Pridať sekciu</button>
+                                    </div>
+                                    <p class="admin-help-text">Sekcie sa zobrazia na konci stránky. Vyberte, či má byť fotka vľavo, vpravo alebo hore.</p>
+                                    <div id="page-blocks-empty" class="admin-blocks-empty">
+                                        <span class="admin-blocks-empty-icon" aria-hidden="true">+</span>
+                                        <p>Zatiaľ žiadne sekcie</p>
+                                        <span>Kliknite na „Pridať sekciu“ a vytvorte prvú časť stránky</span>
+                                    </div>
+                                    <div id="page-blocks" class="admin-blocks-list"></div>
+                                </div>
+
+                                <div class="admin-sticky-save">
+                                    <p>Uložte zmeny, aby sa zobrazili na webe</p>
+                                    <button type="submit" class="btn-primary" id="page-save-btn">Uložiť stránku</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script src="partials/header.js"></script>
+    <script src="partials/footer.js"></script>
+    <script src="js/articles.js"></script>
+    <script src="js/content-layout.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/admin-article-sections.js"></script>
+    <script src="js/admin-pages.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
