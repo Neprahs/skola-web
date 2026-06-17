@@ -34,6 +34,17 @@
             <div class="container admin-container">
                 <div class="admin-panel">
                     <div class="admin-login" id="admin-login">
+                        <div class="admin-staff-guide">
+                            <h3>Návod pre školu</h3>
+                            <p><strong>Tento panel slúži na úpravu noviniek, textov a fotiek.</strong></p>
+                            <ol>
+                                <li>Spustite na školskom počítači súbor <code>SPUSTIT-ADMIN.bat</code> (nechajte okno otvorené).</li>
+                                <li>Otvorte <code>http://localhost:3000/admin</code> alebo adresu z okna servera.</li>
+                                <li>Prihláste sa heslom (predvolené: <code>rschool2026</code>).</li>
+                                <li>Upravte obsah v záložkách <strong>Novinky</strong> alebo <strong>Stránky</strong> a kliknite <strong>Uložiť</strong>.</li>
+                            </ol>
+                            <p class="admin-staff-guide-note">Verejný web na Verceli (<code>skola-web-eta.vercel.app</code>) je len na zobrazenie — úpravy tam nefungujú. Po úpravách lokálne spustite export a push, alebo použite Render (online server).</p>
+                        </div>
                         <form class="admin-form" id="login-form">
                             <h2 data-i18n="page.admin.login.heading">Prihlásenie administrátora</h2>
                             <label>

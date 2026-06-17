@@ -2267,6 +2267,42 @@ body.side-nav-open {
     font-size: 0.875em;
 }
 
+.admin-staff-guide {
+    margin-bottom: 1.5rem;
+    padding: 1.25rem 1.375rem;
+    border-radius: 16px;
+    border: 1px solid #bfdbfe;
+    background: linear-gradient(180deg, #eff6ff 0%, #f8fafc 100%);
+    color: #1e3a5f;
+}
+
+.admin-staff-guide h3 {
+    margin: 0 0 0.75rem;
+    font-size: 1.125rem;
+    color: #1e40af;
+}
+
+.admin-staff-guide p,
+.admin-staff-guide li {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+}
+
+.admin-staff-guide ol {
+    margin: 0.75rem 0;
+    padding-left: 1.25rem;
+}
+
+.admin-staff-guide-note {
+    margin: 0.75rem 0 0;
+    font-size: 0.875rem !important;
+    color: #475569;
+}
+
+.admin-staff-guide code {
+    font-size: 0.85em;
+}
+
 .admin-help-text {
     font-size: 0.875rem;
     color: var(--text-muted);
