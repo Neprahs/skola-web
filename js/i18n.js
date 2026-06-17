@@ -185,8 +185,13 @@
     }
 
     function refreshAfterHeader() {
-        bindLanguageControls();
-        applyTranslations();
+        bootContentOnce().then(() => {
+            bindLanguageControls();
+            applyTranslations();
+            if (typeof window.refreshSiteContentOnPage === "function") {
+                window.refreshSiteContentOnPage();
+            }
+        });
     }
 
     window.RPS_I18N = {

@@ -196,20 +196,35 @@ function localizeSection(section, lang) {
     if (!section || typeof section !== "object") return section;
     const i18n = window.RPS_ARTICLE_I18N;
 
-    if (i18n) {
-        return {
-            ...section,
-            title: i18n.getFieldForLang(section.title, lang),
-            text: i18n.getFieldForLang(section.text, lang),
-            caption: i18n.getFieldForLang(section.caption, lang),
-        };
+    const readField = (value) => {
+        if (i18n?.isMultilingualField(value)) {
+            return i18n.getFieldForLang(value, lang) || (lang !== "sk" ? i18n.getFieldForLang(value, "sk") : "");
+        }
+        if (typeof value === "string") {
+            return lang === "sk" ? value : "";
+        }
+        return localizeField(value, lang);
+    };
+
+    let title = readField(section.title);
+    let text = readField(section.text);
+    let caption = readField(section.caption);
+
+    if (!text && typeof section.text === "string" && lang !== "sk") {
+        text = section.text;
+    }
+    if (!title && typeof section.title === "string" && lang !== "sk") {
+        title = section.title;
+    }
+    if (!caption && typeof section.caption === "string" && lang !== "sk") {
+        caption = section.caption;
     }
 
     return {
         ...section,
-        title: localizeField(section.title, lang),
-        text: localizeField(section.text, lang),
-        caption: localizeField(section.caption, lang),
+        title,
+        text,
+        caption,
     };
 }
 
@@ -218,33 +233,69 @@ function getArticleTranslationOverlay(articleId, lang) {
     return window.RPS_ARTICLE_TRANSLATIONS?.[articleId]?.[lang] || null;
 }
 
-function localizeArticle(article, lang = getActiveLanguage()) {
+function resolveArticleField(value, lang, overlayValue) {
     const i18n = window.RPS_ARTICLE_I18N;
-    const overlay = getArticleTranslationOverlay(article.id, lang);
+    let text = "";
 
-    let title = i18n
-        ? i18n.getFieldForLang(article.title, lang)
-        : localizeField(article.title, lang);
-    let excerpt = i18n
-        ? i18n.getFieldForLang(article.excerpt, lang)
-        : localizeField(article.excerpt, lang);
-
-    let content = localizeField(article.content, lang);
-    if (!Array.isArray(content)) {
-        content = [];
+    if (i18n?.isMultilingualField(value)) {
+        text = i18n.getFieldForLang(value, lang);
+    } else if (typeof value === "string") {
+        text = lang === "sk" ? value : "";
+    } else {
+        text = localizeField(value, lang);
+        if (typeof text !== "string") text = "";
     }
 
-    if (!title && overlay?.title) title = overlay.title;
-    if (!excerpt && overlay?.excerpt) excerpt = overlay.excerpt;
-    if (!content.length && overlay?.content) content = overlay.content;
+    if (!text && overlayValue) text = overlayValue;
+    if (!text && lang !== "sk") {
+        if (typeof value === "string") text = value;
+        else if (i18n?.isMultilingualField(value)) text = i18n.getFieldForLang(value, "sk");
+    }
 
-    const sections = Array.isArray(article.sections)
+    return text;
+}
+
+function resolveArticleContent(article, lang) {
+    const raw = article.content;
+    const overlay = getArticleTranslationOverlay(article.id, lang);
+
+    if (raw && typeof raw === "object" && !Array.isArray(raw)) {
+        const localized = raw[lang] || raw.sk || raw.en || [];
+        return Array.isArray(localized) ? localized : [];
+    }
+
+    if (Array.isArray(raw) && raw.length) {
+        if (lang !== "sk" && overlay?.content?.length) {
+            return overlay.content;
+        }
+        return raw;
+    }
+
+    if (overlay?.content?.length) {
+        return overlay.content;
+    }
+
+    return [];
+}
+
+function localizeArticle(article, lang = getActiveLanguage()) {
+    const overlay = getArticleTranslationOverlay(article.id, lang);
+    const title = resolveArticleField(article.title, lang, overlay?.title);
+    const excerpt = resolveArticleField(article.excerpt, lang, overlay?.excerpt);
+    let content = resolveArticleContent(article, lang);
+
+    let sections = Array.isArray(article.sections)
         ? article.sections.map((section) => localizeSection(section, lang))
-        : article.sections;
+        : [];
 
-    if ((!content.length || !sections?.length) && sections?.length) {
+    if (!sections.length && content.length) {
         const layoutUi = window.RPS_CONTENT_LAYOUT;
-        content = layoutUi?.sectionsToContent(sections) || content;
+        sections = layoutUi?.contentToSections(content) || [];
+    }
+
+    if (!content.length && sections.length) {
+        const layoutUi = window.RPS_CONTENT_LAYOUT;
+        content = layoutUi?.sectionsToContent(sections) || [];
     }
 
     return {
