@@ -35,6 +35,10 @@ function writeStore(store) {
 }
 
 function normalizeArticle(article) {
+  const content = Array.isArray(article.content) || (article.content && typeof article.content === "object")
+    ? article.content
+    : [];
+
   return {
     id: article.id,
     slug: article.slug,
@@ -44,7 +48,7 @@ function normalizeArticle(article) {
     date: article.date,
     featured: Boolean(article.featured),
     heroStyle: ["large", "medium", "small", "none"].includes(article.heroStyle) ? article.heroStyle : "large",
-    content: Array.isArray(article.content) ? article.content : [],
+    content,
     sections: Array.isArray(article.sections) ? article.sections : [],
     created_at: article.created_at || new Date().toISOString(),
     updated_at: article.updated_at || new Date().toISOString(),
@@ -74,8 +78,16 @@ function getArticleById(id) {
   return article ? normalizeArticle(article) : null;
 }
 
+function resolveSlugTitle(title) {
+  if (title && typeof title === "object") {
+    return title.sk || title.en || Object.values(title)[0] || "";
+  }
+  return title || "";
+}
+
 function createSlug(title) {
-  return String(title)
+  const value = resolveSlugTitle(title);
+  return String(value)
     .toLowerCase()
     .trim()
     .split("")
@@ -84,6 +96,14 @@ function createSlug(title) {
     .replace(/[^a-z0-9\s-]/g, "")
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-");
+}
+
+function hasArticleContent(content) {
+  if (Array.isArray(content) && content.length) return true;
+  if (content && typeof content === "object" && Array.isArray(content.sk) && content.sk.length) {
+    return true;
+  }
+  return false;
 }
 
 function ensureUniqueSlug(baseSlug, excludeId = null) {
@@ -178,4 +198,5 @@ module.exports = {
   createArticle,
   updateArticle,
   deleteArticle,
+  hasArticleContent,
 };

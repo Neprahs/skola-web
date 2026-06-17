@@ -194,6 +194,16 @@ function localizeField(value, lang) {
 
 function localizeSection(section, lang) {
     if (!section || typeof section !== "object") return section;
+    const i18n = window.RPS_ARTICLE_I18N;
+
+    if (i18n) {
+        return {
+            ...section,
+            title: i18n.getFieldForLang(section.title, lang),
+            text: i18n.getFieldForLang(section.text, lang),
+            caption: i18n.getFieldForLang(section.caption, lang),
+        };
+    }
 
     return {
         ...section,
@@ -209,24 +219,33 @@ function getArticleTranslationOverlay(articleId, lang) {
 }
 
 function localizeArticle(article, lang = getActiveLanguage()) {
+    const i18n = window.RPS_ARTICLE_I18N;
     const overlay = getArticleTranslationOverlay(article.id, lang);
-    let title = localizeField(article.title, lang);
-    let excerpt = localizeField(article.excerpt, lang);
-    let content = localizeField(article.content, lang);
 
+    let title = i18n
+        ? i18n.getFieldForLang(article.title, lang)
+        : localizeField(article.title, lang);
+    let excerpt = i18n
+        ? i18n.getFieldForLang(article.excerpt, lang)
+        : localizeField(article.excerpt, lang);
+
+    let content = localizeField(article.content, lang);
     if (!Array.isArray(content)) {
         content = [];
     }
 
-    if (overlay) {
-        if (overlay.title) title = overlay.title;
-        if (overlay.excerpt) excerpt = overlay.excerpt;
-        if (Array.isArray(overlay.content)) content = overlay.content;
-    }
+    if (!title && overlay?.title) title = overlay.title;
+    if (!excerpt && overlay?.excerpt) excerpt = overlay.excerpt;
+    if (!content.length && overlay?.content) content = overlay.content;
 
     const sections = Array.isArray(article.sections)
         ? article.sections.map((section) => localizeSection(section, lang))
         : article.sections;
+
+    if ((!content.length || !sections?.length) && sections?.length) {
+        const layoutUi = window.RPS_CONTENT_LAYOUT;
+        content = layoutUi?.sectionsToContent(sections) || content;
+    }
 
     return {
         ...article,

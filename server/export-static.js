@@ -11,7 +11,7 @@ const path = require("path");
 
 const rootDir = path.join(__dirname, "..");
 const serverDataDir = path.join(__dirname, "data");
-const serverUploadsDir = path.join(__dirname, "uploads");
+const serverUploadsDir = path.join(serverDataDir, "uploads");
 const publicDataDir = path.join(rootDir, "data");
 const publicUploadsDir = path.join(rootDir, "uploads");
 

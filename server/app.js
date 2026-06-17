@@ -33,7 +33,7 @@ app.use("/api/articles", articlesRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/upload", uploadRouter);
 app.use("/api/content", contentRouter);
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "data", "uploads")));
 
 app.get("/admin", (_req, res) => {
   res.sendFile(path.join(rootDir, "admin.html"));

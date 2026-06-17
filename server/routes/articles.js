@@ -6,6 +6,7 @@ const {
   createArticle,
   updateArticle,
   deleteArticle,
+  hasArticleContent,
 } = require("../db");
 
 const router = express.Router();
@@ -26,7 +27,7 @@ router.get("/:slug", (req, res) => {
 router.post("/", require("../middleware/requireAuth"), (req, res) => {
   const { title, excerpt, image, date, featured, content, sections, heroStyle } = req.body;
 
-  if (!title || !excerpt || !image || !date || !Array.isArray(content) || !content.length) {
+  if (!title || !excerpt || !image || !date || !hasArticleContent(content)) {
     res.status(400).json({ error: "Missing required article fields." });
     return;
   }
@@ -54,7 +55,7 @@ router.put("/:id", require("../middleware/requireAuth"), (req, res) => {
 
   const { title, excerpt, image, date, featured, content, sections, heroStyle } = req.body;
 
-  if (!title || !excerpt || !image || !date || !Array.isArray(content) || !content.length) {
+  if (!title || !excerpt || !image || !date || !hasArticleContent(content)) {
     res.status(400).json({ error: "Missing required article fields." });
     return;
   }

@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: skola-web
+    runtime: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    plan: starter
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+    disk:
+      name: skola-data
+      mountPath: /opt/render/project/src/server/data
+      sizeGB: 1

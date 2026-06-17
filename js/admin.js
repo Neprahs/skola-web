@@ -5,6 +5,108 @@ function t(key, fallback) {
 let adminArticles = [];
 let isAuthenticated = false;
 let editingArticleId = "";
+let articleEditDraft = null;
+let currentArticleLang = "sk";
+
+function getArticleI18n() {
+    return window.RPS_ARTICLE_I18N;
+}
+
+function getCurrentArticleLang() {
+    return document.getElementById("article-lang")?.value || currentArticleLang || "sk";
+}
+
+function syncArticleFormToDraft() {
+    if (!articleEditDraft) return;
+
+    const i18n = getArticleI18n();
+    const lang = getCurrentArticleLang();
+    if (!i18n) return;
+
+    const title = document.getElementById("article-title").value.trim();
+    const excerpt = document.getElementById("article-excerpt").value.trim();
+    const collected = typeof window.collectArticleSectionsFromEditor === "function"
+        ? window.collectArticleSectionsFromEditor()
+        : [];
+
+    articleEditDraft.title = i18n.setFieldForLang(articleEditDraft.title, lang, title);
+    articleEditDraft.excerpt = i18n.setFieldForLang(articleEditDraft.excerpt, lang, excerpt);
+    articleEditDraft.sections = i18n.mergeSectionsFromLang(
+        articleEditDraft.sections,
+        collected,
+        lang
+    );
+    articleEditDraft.image = document.getElementById("article-image").value.trim();
+    articleEditDraft.date = document.getElementById("article-date").value;
+    articleEditDraft.featured = document.getElementById("article-featured").checked;
+    articleEditDraft.heroStyle = document.getElementById("article-hero-style")?.value || "large";
+}
+
+function loadArticleDraftToForm(lang = getCurrentArticleLang()) {
+    if (!articleEditDraft) return;
+
+    const i18n = getArticleI18n();
+    if (!i18n) return;
+
+    currentArticleLang = lang;
+    const langSelect = document.getElementById("article-lang");
+    if (langSelect) langSelect.value = lang;
+
+    document.getElementById("article-title").value = i18n.getFieldForLang(articleEditDraft.title, lang);
+    document.getElementById("article-excerpt").value = i18n.getFieldForLang(articleEditDraft.excerpt, lang);
+    document.getElementById("article-image").value = articleEditDraft.image || "";
+    document.getElementById("article-date").value = articleEditDraft.date || "";
+    document.getElementById("article-featured").checked = Boolean(articleEditDraft.featured);
+    updateImagePreview(articleEditDraft.image || "");
+
+    if (typeof window.loadArticleSectionsIntoEditor === "function") {
+        window.loadArticleSectionsIntoEditor({
+            sections: i18n.expandSectionsForLang(articleEditDraft.sections, lang),
+            heroStyle: articleEditDraft.heroStyle,
+            content: [],
+        });
+    }
+}
+
+function buildArticleDraftFromRecord(article) {
+    const i18n = getArticleI18n();
+    if (!i18n) return null;
+
+    const merged = i18n.applyTranslationOverlayToArticle(article);
+
+    return {
+        id: article.id,
+        title: merged.title,
+        excerpt: merged.excerpt,
+        sections: merged.sections,
+        image: article.image,
+        date: article.date,
+        featured: article.featured,
+        heroStyle: article.heroStyle || "large",
+    };
+}
+
+function createEmptyArticleDraft() {
+    const i18n = getArticleI18n();
+    const emptySection = [{ id: "section-1", type: "text", text: "" }];
+
+    return {
+        id: "",
+        title: i18n?.toMultilingualField("") || { sk: "" },
+        excerpt: i18n?.toMultilingualField("") || { sk: "" },
+        sections: emptySection,
+        image: "",
+        date: new Date().toISOString().slice(0, 10),
+        featured: false,
+        heroStyle: "large",
+    };
+}
+
+function handleArticleLangChange() {
+    if (!articleEditDraft) return;
+    syncArticleFormToDraft();
+    loadArticleDraftToForm(getCurrentArticleLang());
+}
 
 function renderAdminList() {
     const list = document.getElementById("admin-article-list");
@@ -57,21 +159,11 @@ function loadArticleIntoForm(id) {
     if (!article) return;
 
     editingArticleId = article.id;
-    const displayArticle = localizeArticle(article);
-
+    articleEditDraft = buildArticleDraftFromRecord(article);
     document.getElementById("article-id").value = article.id;
-    document.getElementById("article-title").value = displayArticle.title;
-    document.getElementById("article-excerpt").value = displayArticle.excerpt;
-    document.getElementById("article-image").value = article.image;
-    document.getElementById("article-date").value = article.date;
-    document.getElementById("article-featured").checked = article.featured;
-    document.getElementById("article-content").value = displayArticle.content.join("\n\n");
-    if (typeof window.loadArticleSectionsIntoEditor === "function") {
-        window.loadArticleSectionsIntoEditor(article);
-    }
+    loadArticleDraftToForm("sk");
     document.getElementById("cancel-edit").hidden = false;
     syncAdminFormTitle();
-    updateImagePreview(article.image);
     window.scrollTo({ top: document.getElementById("admin-article-form").offsetTop - 20, behavior: "smooth" });
 }
 
@@ -79,12 +171,12 @@ function resetForm() {
     document.getElementById("admin-article-form").reset();
     document.getElementById("article-id").value = "";
     editingArticleId = "";
+    articleEditDraft = createEmptyArticleDraft();
+    currentArticleLang = "sk";
     document.getElementById("cancel-edit").hidden = true;
     syncAdminFormTitle();
     updateImagePreview("");
-    if (typeof window.resetArticleSectionsEditor === "function") {
-        window.resetArticleSectionsEditor();
-    }
+    loadArticleDraftToForm("sk");
 }
 
 function updateImagePreview(url) {
@@ -116,40 +208,53 @@ async function deleteArticle(id) {
 async function handleFormSubmit(event) {
     event.preventDefault();
 
-    const idField = document.getElementById("article-id");
-    const title = document.getElementById("article-title").value.trim();
-    const excerpt = document.getElementById("article-excerpt").value.trim();
-    const image = document.getElementById("article-image").value.trim();
-    const date = document.getElementById("article-date").value;
-    const featured = document.getElementById("article-featured").checked;
-    const heroStyle = document.getElementById("article-hero-style")?.value || "large";
-    const sections = typeof window.collectArticleSectionsFromEditor === "function"
-        ? window.collectArticleSectionsFromEditor()
-        : [];
-    const layoutUi = window.RPS_CONTENT_LAYOUT;
-    const content = layoutUi?.sectionsToContent(sections) || [];
+    const i18n = getArticleI18n();
+    if (!articleEditDraft || !i18n) return;
 
-    if (!title || !excerpt || !image || !date || !sections.length || !content.length) {
+    syncArticleFormToDraft();
+
+    const lang = "sk";
+    const title = i18n.getFieldForLang(articleEditDraft.title, lang);
+    const excerpt = i18n.getFieldForLang(articleEditDraft.excerpt, lang);
+    const image = articleEditDraft.image?.trim();
+    const date = articleEditDraft.date;
+    const featured = articleEditDraft.featured;
+    const heroStyle = articleEditDraft.heroStyle || "large";
+    const sections = articleEditDraft.sections;
+    const content = i18n.buildMultilingualContentMap(sections);
+    const skContent = content.sk || i18n.buildMultilingualContent(sections, "sk");
+
+    if (!title || !excerpt || !image || !date || !sections.length || !skContent.length) {
         showAdminMessage(
-            sections.length && !content.length
-                ? "Vyplňte text alebo pridajte fotku v častiach článku."
-                : t("page.admin.msg.fillRequired", "Please fill in all required fields."),
+            !skContent.length
+                ? "Vyplňte text alebo pridajte fotku v častiach článku (aspoň v slovenčine)."
+                : "Vyplňte všetky povinné polia aspoň v slovenčine.",
             true
         );
         return;
     }
 
-    const payload = { title, excerpt, image, date, featured, content, sections, heroStyle };
+    const payload = {
+        title: articleEditDraft.title,
+        excerpt: articleEditDraft.excerpt,
+        image,
+        date,
+        featured,
+        content,
+        sections,
+        heroStyle,
+    };
 
     try {
+        const idField = document.getElementById("article-id");
         if (idField.value) {
             const updated = await updateArticle(idField.value, payload);
             adminArticles = adminArticles.map((item) => (item.id === updated.id ? updated : item));
-            showAdminMessage(t("page.admin.msg.updated", "Article updated."));
+            showAdminMessage("Článok bol uložený.");
         } else {
             const created = await createArticle(payload);
             adminArticles.push(created);
-            showAdminMessage(t("page.admin.msg.added", "Article added."));
+            showAdminMessage("Článok bol pridaný.");
         }
 
         renderAdminList();
@@ -231,21 +336,31 @@ function showAdminMessage(text, isError = false) {
     message.className = `admin-message${isError ? " is-error" : ""}`;
 }
 
+function isLocalAdminHost() {
+    return ["localhost", "127.0.0.1"].includes(window.location.hostname);
+}
+
+function updateBackendNotice() {
+    const note = document.getElementById("admin-backend-note");
+    if (!note) return;
+    note.hidden = isLocalAdminHost();
+}
+
 async function initAdminPage() {
+    updateBackendNotice();
     document.getElementById("login-form")?.addEventListener("submit", handleLogin);
     document.getElementById("logout-btn")?.addEventListener("click", handleLogout);
     document.getElementById("admin-article-form")?.addEventListener("submit", handleFormSubmit);
     document.getElementById("cancel-edit")?.addEventListener("click", resetForm);
+    document.getElementById("article-lang")?.addEventListener("change", handleArticleLangChange);
     document.getElementById("image-upload")?.addEventListener("change", handleImageUpload);
     document.getElementById("article-image")?.addEventListener("input", (event) => {
         updateImagePreview(event.target.value.trim());
     });
 
     syncAdminFormTitle();
-
-    if (typeof window.resetArticleSectionsEditor === "function") {
-        window.resetArticleSectionsEditor();
-    }
+    articleEditDraft = createEmptyArticleDraft();
+    loadArticleDraftToForm("sk");
 
     try {
         const authenticated = await checkAdminAuth();
@@ -256,7 +371,12 @@ async function initAdminPage() {
         }
     } catch {
         showLoginScreen();
-        showAdminMessage(t("page.admin.msg.startBackend", "Start the backend server to manage articles."), true);
+        showAdminMessage(
+            isLocalAdminHost()
+                ? "Spustite server: cd server → npm start, potom otvorte http://localhost:3000/admin"
+                : "Na live webe (Vercel) admin nefunguje — backend nie je online. Použite localhost alebo Render.",
+            true
+        );
     }
 }
 

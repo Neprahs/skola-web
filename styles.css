@@ -2242,6 +2242,31 @@ body.side-nav-open {
     color: var(--text-primary);
 }
 
+.admin-help-text--inline {
+    margin: 0;
+    max-width: 420px;
+    align-self: end;
+}
+
+.admin-cms-toolbar--article {
+    margin-bottom: 1.25rem;
+}
+
+.admin-backend-note {
+    margin: 0 0 1rem;
+    padding: 0.875rem 1rem;
+    border-radius: 12px;
+    border: 1px solid #fbbf24;
+    background: #fffbeb;
+    color: #92400e;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+}
+
+.admin-backend-note code {
+    font-size: 0.875em;
+}
+
 .admin-help-text {
     font-size: 0.875rem;
     color: var(--text-muted);

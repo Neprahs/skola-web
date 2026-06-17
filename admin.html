@@ -54,6 +54,10 @@
                             <button type="button" class="admin-tab" data-admin-tab="pages" data-i18n-lock="true">Stránky</button>
                         </div>
 
+                        <p class="admin-backend-note" id="admin-backend-note" hidden>
+                            Online admin funguje len so serverom. Na Verceli prihlásenie nefunguje — spustite server lokálne (<code>cd server → npm start</code>) a otvorte <code>http://localhost:3000/admin</code>, alebo nasaďte backend na Render (pozri nižšie).
+                        </p>
+
                         <p class="admin-message" id="admin-message" role="status" aria-live="polite">Zmeny sa ukladajú na server.</p>
 
                         <div id="admin-tab-articles">
@@ -62,6 +66,22 @@
                             <form class="admin-form" id="admin-article-form">
                                 <h2 id="form-title" data-i18n="page.admin.form.addTitle">Pridať nový článok</h2>
                                 <input type="hidden" id="article-id">
+
+                                <div class="admin-cms-toolbar admin-cms-toolbar--article">
+                                    <label class="admin-cms-picker">
+                                        <span>Jazyk textov článku</span>
+                                        <select id="article-lang">
+                                            <option value="sk">Slovenčina</option>
+                                            <option value="en">English</option>
+                                            <option value="cs">Čeština</option>
+                                            <option value="de">Deutsch</option>
+                                            <option value="pl">Polski</option>
+                                            <option value="hu">Magyar</option>
+                                            <option value="uk">Українська</option>
+                                        </select>
+                                    </label>
+                                    <p class="admin-help-text admin-help-text--inline">Nadpis, popis a obsah článku upravujete pre každý jazyk zvlášť. Fotky a dátum sú spoločné.</p>
+                                </div>
 
                                 <label>
                                     <span data-i18n="page.admin.form.titleLabel">Nadpis</span>
@@ -219,6 +239,8 @@
 
     <script src="partials/header.js"></script>
     <script src="partials/footer.js"></script>
+    <script src="js/article-translations.js"></script>
+    <script src="js/article-i18n.js"></script>
     <script src="js/articles.js"></script>
     <script src="js/content-layout.js"></script>
     <script src="js/admin.js"></script>

@@ -6,7 +6,7 @@ const requireAuth = require("../middleware/requireAuth");
 
 const router = express.Router();
 
-const uploadsDir = path.join(__dirname, "..", "uploads");
+const uploadsDir = path.join(__dirname, "..", "data", "uploads");
 fs.mkdirSync(uploadsDir, { recursive: true });
 
 const storage = multer.diskStorage({
