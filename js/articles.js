@@ -192,14 +192,48 @@ function localizeField(value, lang) {
     return String(value);
 }
 
+function localizeSection(section, lang) {
+    if (!section || typeof section !== "object") return section;
+
+    return {
+        ...section,
+        title: localizeField(section.title, lang),
+        text: localizeField(section.text, lang),
+        caption: localizeField(section.caption, lang),
+    };
+}
+
+function getArticleTranslationOverlay(articleId, lang) {
+    if (!articleId || lang === "sk") return null;
+    return window.RPS_ARTICLE_TRANSLATIONS?.[articleId]?.[lang] || null;
+}
+
 function localizeArticle(article, lang = getActiveLanguage()) {
-    const localizedContent = localizeField(article.content, lang);
+    const overlay = getArticleTranslationOverlay(article.id, lang);
+    let title = localizeField(article.title, lang);
+    let excerpt = localizeField(article.excerpt, lang);
+    let content = localizeField(article.content, lang);
+
+    if (!Array.isArray(content)) {
+        content = [];
+    }
+
+    if (overlay) {
+        if (overlay.title) title = overlay.title;
+        if (overlay.excerpt) excerpt = overlay.excerpt;
+        if (Array.isArray(overlay.content)) content = overlay.content;
+    }
+
+    const sections = Array.isArray(article.sections)
+        ? article.sections.map((section) => localizeSection(section, lang))
+        : article.sections;
 
     return {
         ...article,
-        title: localizeField(article.title, lang),
-        excerpt: localizeField(article.excerpt, lang),
-        content: Array.isArray(localizedContent) ? localizedContent : [],
+        title,
+        excerpt,
+        content,
+        sections,
     };
 }
 

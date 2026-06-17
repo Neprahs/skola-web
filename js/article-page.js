@@ -1,4 +1,8 @@
-﻿async function initArticlePage() {
+﻿function t(key, fallback) {
+    return window.RPS_I18N?.t(key) || fallback;
+}
+
+async function initArticlePage() {
     const container = document.getElementById("article-content");
     if (!container) return;
 
@@ -17,7 +21,7 @@
         return;
     }
 
-    document.title = `${article.title} — Základná škola Rudník`;
+    document.title = `${article.title} — ${t("school.name", "Základná škola Rudník")}`;
 
     const breadcrumbCurrent = document.getElementById("article-breadcrumb-current");
     if (breadcrumbCurrent) breadcrumbCurrent.textContent = article.title;
