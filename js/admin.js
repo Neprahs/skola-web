@@ -336,17 +336,57 @@ function showAdminMessage(text, isError = false) {
     message.className = `admin-message${isError ? " is-error" : ""}`;
 }
 
-function isLocalAdminHost() {
-    return ["localhost", "127.0.0.1"].includes(window.location.hostname);
+function getAdminEnvironment() {
+    const host = window.location.hostname;
+    if (["localhost", "127.0.0.1"].includes(host)) return "local";
+    if (host.includes("onrender.com")) return "render";
+    return "static";
+}
+
+function updateStaffGuide() {
+    const body = document.getElementById("admin-staff-guide-body");
+    if (!body) return;
+
+    const env = getAdminEnvironment();
+
+    if (env === "render") {
+        body.innerHTML = `
+            <ol>
+                <li>Prihláste sa heslom, ktoré nastavil správca webu.</li>
+                <li>Upravte obsah v záložkách <strong>Novinky</strong> alebo <strong>Stránky</strong>.</li>
+                <li>Kliknite <strong>Uložiť</strong> — zmeny sa okamžite zobrazia na webe.</li>
+            </ol>
+            <p class="admin-staff-guide-note">Toto je online verzia — funguje z akéhokoľvek počítača. Verejný web aj admin sú na tejto adrese.</p>
+        `;
+        return;
+    }
+
+    if (env === "local") {
+        body.innerHTML = `
+            <ol>
+                <li>Spustite súbor <code>SPUSTIT-ADMIN.bat</code> (nechajte okno otvorené).</li>
+                <li>Otvorte <code>http://localhost:3000/admin</code>.</li>
+                <li>Prihláste sa heslom (predvolené: <code>rschool2026</code>).</li>
+                <li>Upravte obsah a kliknite <strong>Uložiť</strong>.</li>
+            </ol>
+            <p class="admin-staff-guide-note">Pre online úpravy bez počítača nasaďte backend na Render.</p>
+        `;
+        return;
+    }
+
+    body.innerHTML = `
+        <p class="admin-staff-guide-note">Na tejto adrese (Vercel) admin nefunguje — chýba server. Použite online adresu z Render alebo spustite <code>SPUSTIT-ADMIN.bat</code> na školskom PC.</p>
+    `;
 }
 
 function updateBackendNotice() {
     const note = document.getElementById("admin-backend-note");
     if (!note) return;
-    note.hidden = isLocalAdminHost();
+    note.hidden = getAdminEnvironment() !== "static";
 }
 
 async function initAdminPage() {
+    updateStaffGuide();
     updateBackendNotice();
     document.getElementById("login-form")?.addEventListener("submit", handleLogin);
     document.getElementById("logout-btn")?.addEventListener("click", handleLogout);
@@ -372,9 +412,9 @@ async function initAdminPage() {
     } catch {
         showLoginScreen();
         showAdminMessage(
-            isLocalAdminHost()
-                ? "Spustite server: cd server → npm start, potom otvorte http://localhost:3000/admin"
-                : "Na live webe (Vercel) admin nefunguje — backend nie je online. Použite localhost alebo Render.",
+            getAdminEnvironment() === "static"
+                ? "Na live webe (Vercel) admin nefunguje — nasaďte backend na Render alebo spustite SPUSTIT-ADMIN.bat."
+                : "Nepodarilo sa spojiť so serverom. Skontrolujte, či beží backend.",
             true
         );
     }

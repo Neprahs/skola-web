@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+const fs = require("fs");
 const express = require("express");
 const session = require("express-session");
 const path = require("path");
@@ -13,6 +14,14 @@ require("./db");
 
 const app = express();
 const rootDir = path.join(__dirname, "..");
+const dataDir = path.join(__dirname, "data");
+const uploadsDir = path.join(dataDir, "uploads");
+
+fs.mkdirSync(uploadsDir, { recursive: true });
+
+if (process.env.NODE_ENV === "production") {
+  app.set("trust proxy", 1);
+}
 
 app.use(express.json());
 app.use(
@@ -29,11 +38,15 @@ app.use(
   })
 );
 
+app.get("/api/health", (_req, res) => {
+  res.json({ ok: true });
+});
+
 app.use("/api/articles", articlesRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/upload", uploadRouter);
 app.use("/api/content", contentRouter);
-app.use("/uploads", express.static(path.join(__dirname, "data", "uploads")));
+app.use("/uploads", express.static(uploadsDir));
 
 app.get("/admin", (_req, res) => {
   res.sendFile(path.join(rootDir, "admin.html"));

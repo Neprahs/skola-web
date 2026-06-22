@@ -6,6 +6,7 @@ services:
     buildCommand: npm install
     startCommand: npm start
     plan: starter
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
