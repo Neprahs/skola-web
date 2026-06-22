@@ -16,6 +16,28 @@ function getLocalNetworkIp() {
   return null;
 }
 
+function validateProductionEnv() {
+  if (process.env.NODE_ENV !== "production") return;
+
+  const warnings = [];
+  const password = process.env.ADMIN_PASSWORD;
+  const secret = process.env.SESSION_SECRET;
+
+  if (!password || password === "rschool2026") {
+    warnings.push("Set ADMIN_PASSWORD to a strong password (not the default).");
+  }
+  if (!secret || secret === "r-school-dev-secret-change-me") {
+    warnings.push("Set SESSION_SECRET to a long random string.");
+  }
+
+  if (warnings.length) {
+    console.warn("Production security warnings:");
+    warnings.forEach((message) => console.warn(`  - ${message}`));
+  }
+}
+
+validateProductionEnv();
+
 app.listen(PORT, HOST, () => {
   const lanIp = getLocalNetworkIp();
   console.log(`Rudník Primary School server running at http://localhost:${PORT}`);
